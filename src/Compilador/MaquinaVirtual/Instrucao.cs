@@ -1,9 +1,29 @@
 public enum Operacao
 {
-    INPP,
     CRCT,
+    CRVL,
+    SOMA,
+    SUBT,
+    MULT,
+    DIVI,
+    INVE,
+    CONJ,
+    DISJ,
+    NEGA,
+    CPME,
+    CPMA,
+    CPIG,
+    CDES,
+    CPMI,
+    CMAI,
+    ARMZ,
+    DSVI,
+    DSVF,
+    LEIT,
     IMPR,
-    PARA
+    ALME,
+    PARA,
+    INPP
 }
 
 class Instrucao
