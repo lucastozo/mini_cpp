@@ -1,4 +1,4 @@
-public enum Operacao
+enum Operacao
 {
     CRCT,
     CRVL,

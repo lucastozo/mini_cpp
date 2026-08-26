@@ -1,7 +1,7 @@
 class MaquinaVirtual
 {
     private readonly List<Instrucao> Programa = new();
-    private readonly Stack<double> Dados = new();
+    private readonly PilhaDados Dados = new();
 
     public void Executar(string programaPath = "Compilador/programa" )
     {
@@ -37,7 +37,7 @@ class MaquinaVirtual
                     break;
 
                 case Operacao.CRVL:
-                    Dados.Push(Dados.ElementAt((int)instrucao.Operando!.Value));
+                    Dados.Push(Dados[(int)instrucao.Operando!.Value]);
                     break;
 
                 case Operacao.SOMA:
@@ -121,7 +121,7 @@ class MaquinaVirtual
                 }
 
                 case Operacao.ARMZ:
-                    DadosInserirNoIndice((int)instrucao.Operando!.Value, Dados.Pop());
+                    Dados[(int)instrucao.Operando!.Value] = Dados.Pop();
                     break;
 
                 case Operacao.DSVI:
@@ -143,25 +143,20 @@ class MaquinaVirtual
                 case Operacao.IMPR:
                     Console.WriteLine(Dados.Pop());
                     break;
+                
+                case Operacao.ALME:
+                    for (int i = 0; i < (int)instrucao.Operando!.Value; i++)
+                        Dados.Push(double.NaN);
+                    break;
 
                 case Operacao.PARA:
                     return;
+                
+                default:
+                    throw new Exception($"Operação {instrucao.Opcode} não implementado.");
             }
 
             PC++;
         }
-    }
-
-    private void DadosInserirNoIndice(int indice, double valor)
-    {
-        Stack<double> temp = new();
-        
-        for (int i = 0; i < indice; i++)
-            temp.Push(Dados.Pop());
-
-        Dados.Push(valor);
-
-        while (temp.Count > 0)
-            Dados.Push(temp.Pop());
     }
 }
