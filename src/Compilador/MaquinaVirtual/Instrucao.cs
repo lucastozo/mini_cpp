@@ -1,3 +1,15 @@
+class Instrucao
+{
+    public Operacao Opcode { get; init; }
+    public double? Operando { get; init; }
+
+    public Instrucao(Operacao opcode, double? operando)
+    {
+        Opcode = opcode;
+        Operando = operando;
+    }  
+}
+
 enum Operacao
 {
     CRCT,
@@ -24,16 +36,4 @@ enum Operacao
     ALME,
     PARA,
     INPP
-}
-
-class Instrucao
-{
-    public Operacao Opcode { get; init; }
-    public double? Operando { get; init; }
-
-    public Instrucao(Operacao opcode, double? operando)
-    {
-        Opcode = opcode;
-        Operando = operando;
-    }  
 }

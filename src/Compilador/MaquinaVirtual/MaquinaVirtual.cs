@@ -1,9 +1,9 @@
 class MaquinaVirtual
 {
-    private readonly List<Instrucao> Programa = new();
-    private readonly PilhaDados Dados = new();
+    private readonly List<Instrucao> _programa = new();
+    private readonly PilhaDados _dados = new();
 
-    public void Executar(string programaPath = "Compilador/programa" )
+    public void Executar(string programaPath)
     {
         string[] linhas = File.ReadAllLines(programaPath);
         foreach (string linha in linhas)
@@ -17,111 +17,111 @@ class MaquinaVirtual
                 operando = double.Parse(partes[1], System.Globalization.CultureInfo.InvariantCulture); // InvariantCulture -> . como separador decimal
 
             Instrucao instrucao = new(operacao, operando);
-            Programa.Add(instrucao);
+            _programa.Add(instrucao);
         }
 
-        if(Programa[0].Opcode != Operacao.INPP) throw new Exception("Programa deveria começar com INPP.");
+        if(_programa[0].Opcode != Operacao.INPP) throw new Exception("Programa deveria começar com INPP.");
         int PC = 0;
 
         while (true)
         {
-            Instrucao instrucao = Programa[PC];
+            Instrucao instrucao = _programa[PC];
             switch (instrucao.Opcode)
             {
                 case Operacao.INPP:
-                    Dados.Clear();
+                    _dados.Clear();
                     break;
 
                 case Operacao.CRCT:
-                    Dados.Push(instrucao.Operando!.Value);
+                    _dados.Push(instrucao.Operando!.Value);
                     break;
 
                 case Operacao.CRVL:
-                    Dados.Push(Dados[(int)instrucao.Operando!.Value]);
+                    _dados.Push(_dados[(int)instrucao.Operando!.Value]);
                     break;
 
                 case Operacao.SOMA:
-                    Dados.Push(Dados.Pop() + Dados.Pop());
+                    _dados.Push(_dados.Pop() + _dados.Pop());
                     break;
 
                 case Operacao.SUBT:
                 {
-                    double b = Dados.Pop(); double a = Dados.Pop();
-                    Dados.Push(a - b);
+                    double b = _dados.Pop(); double a = _dados.Pop();
+                    _dados.Push(a - b);
                     break;
                 }
                 
                 case Operacao.MULT:
-                    Dados.Push(Dados.Pop() * Dados.Pop());
+                    _dados.Push(_dados.Pop() * _dados.Pop());
                     break;
                 
                 case Operacao.DIVI:
                 {
-                    double b = Dados.Pop(); double a = Dados.Pop();
-                    Dados.Push(a / b);
+                    double b = _dados.Pop(); double a = _dados.Pop();
+                    _dados.Push(a / b);
                     break;
                 }
 
                 case Operacao.INVE:
-                    Dados.Push(-Dados.Pop());
+                    _dados.Push(-_dados.Pop());
                     break;
 
                 case Operacao.CONJ:
                 {
-                    double b = Dados.Pop(); double a = Dados.Pop();
-                    Dados.Push(a == 1 && b == 1 ? 1 : 0);
+                    double b = _dados.Pop(); double a = _dados.Pop();
+                    _dados.Push(a == 1 && b == 1 ? 1 : 0);
                     break;
                 }
                 
                 case Operacao.DISJ:
                 {
-                    double b = Dados.Pop(); double a = Dados.Pop();
-                    Dados.Push(a == 1 || b == 1 ? 1 : 0);
+                    double b = _dados.Pop(); double a = _dados.Pop();
+                    _dados.Push(a == 1 || b == 1 ? 1 : 0);
                     break;
                 }
 
                 case Operacao.NEGA:
-                    Dados.Push(Dados.Pop() == 1 ? 0 : 1);
+                    _dados.Push(_dados.Pop() == 1 ? 0 : 1);
                     break;
 
                 case Operacao.CPME:
                 {
-                    double b = Dados.Pop(); double a = Dados.Pop();
-                    Dados.Push(a < b ? 1 : 0);
+                    double b = _dados.Pop(); double a = _dados.Pop();
+                    _dados.Push(a < b ? 1 : 0);
                     break;
                 }
 
                 case Operacao.CPMA:
                 {
-                    double b = Dados.Pop(); double a = Dados.Pop();
-                    Dados.Push(a > b ? 1 : 0);
+                    double b = _dados.Pop(); double a = _dados.Pop();
+                    _dados.Push(a > b ? 1 : 0);
                     break;
                 }
 
                 case Operacao.CPIG:
-                    Dados.Push(Dados.Pop() == Dados.Pop() ? 1 : 0);
+                    _dados.Push(_dados.Pop() == _dados.Pop() ? 1 : 0);
                     break;
 
                 case Operacao.CDES:
-                    Dados.Push(Dados.Pop() != Dados.Pop() ? 1 : 0);
+                    _dados.Push(_dados.Pop() != _dados.Pop() ? 1 : 0);
                     break;
 
                 case Operacao.CPMI:
                 {
-                    double b = Dados.Pop(); double a = Dados.Pop();
-                    Dados.Push(a <= b ? 1 : 0);
+                    double b = _dados.Pop(); double a = _dados.Pop();
+                    _dados.Push(a <= b ? 1 : 0);
                     break;
                 }
 
                 case Operacao.CMAI:
                 {
-                    double b = Dados.Pop(); double a = Dados.Pop();
-                    Dados.Push(a >= b ? 1 : 0);
+                    double b = _dados.Pop(); double a = _dados.Pop();
+                    _dados.Push(a >= b ? 1 : 0);
                     break;
                 }
 
                 case Operacao.ARMZ:
-                    Dados[(int)instrucao.Operando!.Value] = Dados.Pop();
+                    _dados[(int)instrucao.Operando!.Value] = _dados.Pop();
                     break;
 
                 case Operacao.DSVI:
@@ -129,7 +129,7 @@ class MaquinaVirtual
                     continue;
                 
                 case Operacao.DSVF:
-                    if (Dados.Pop() == 0) 
+                    if (_dados.Pop() == 0) 
                     {
                         PC = (int)instrucao.Operando!.Value;
                         continue;
@@ -137,16 +137,16 @@ class MaquinaVirtual
                     break;
 
                 case Operacao.LEIT:
-                    Dados.Push(double.Parse(Console.ReadLine()!, System.Globalization.CultureInfo.InvariantCulture));
+                    _dados.Push(double.Parse(Console.ReadLine()!, System.Globalization.CultureInfo.InvariantCulture));
                     break;
 
                 case Operacao.IMPR:
-                    Console.WriteLine(Dados.Pop());
+                    Console.WriteLine(_dados.Pop());
                     break;
                 
                 case Operacao.ALME:
                     for (int i = 0; i < (int)instrucao.Operando!.Value; i++)
-                        Dados.Push(double.NaN);
+                        _dados.Push(double.NaN);
                     break;
 
                 case Operacao.PARA:
