@@ -1,31 +1,13 @@
 class MaquinaVirtual
 {
-    private readonly List<Instrucao> _programa = new();
     private readonly PilhaDados _dados = new();
 
-    public void Executar(string programaPath)
+    public void Executar(List<Instrucao> programa)
     {
-        string[] linhas = File.ReadAllLines(programaPath);
-        foreach (string linha in linhas)
-        {
-            string[] partes = linha.Split(' ');            
-            if (!Enum.TryParse(partes[0], out Operacao operacao))
-                throw new Exception($"Operação {partes[0]} não existe.");
-
-            double? operando = null;
-            if (partes.Length == 2) 
-                operando = double.Parse(partes[1], System.Globalization.CultureInfo.InvariantCulture); // InvariantCulture -> . como separador decimal
-
-            Instrucao instrucao = new(operacao, operando);
-            _programa.Add(instrucao);
-        }
-
-        if(_programa[0].Opcode != Operacao.INPP) throw new Exception("Programa deveria começar com INPP.");
         int PC = 0;
-
         while (true)
         {
-            Instrucao instrucao = _programa[PC];
+            Instrucao instrucao = programa[PC];
             switch (instrucao.Opcode)
             {
                 case Operacao.INPP:
