@@ -13,6 +13,8 @@ bool gerar = args[0] == "-g";
 if (gerar)
 {
     string codigoFonte = File.ReadAllText(args[1]);
+    Lexer lexer = new(codigoFonte);
+    List<Token> tokens = lexer.Tokenizar();
 }
 else
 {

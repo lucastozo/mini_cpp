@@ -12,7 +12,7 @@ class Token
 
 enum TipoToken
 {
-    INCLUDE, USING, NAMESPACE, STD, INT, MAIN,
+    INCLUDE, IOSTREAM, USING, NAMESPACE, STD, INT, MAIN,
     DOUBLE, IF, ELSE, WHILE, COUT, ENDL, LER_DOUBLE,
 
     ID, NUMERO_REAL,
@@ -28,6 +28,7 @@ enum TipoToken
     ME, // < 
     MAI, // >=
     MI, // <=
+    INSERCAO, // << (para usar com o cout)
 
     CERQUILHA,
     PONTOVIRGULA,
