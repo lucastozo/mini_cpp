@@ -10,16 +10,25 @@
 }
 
 bool gerar = args[0] == "-g";
-if (gerar)
+try
 {
-    string codigoFonte = File.ReadAllText(args[1]);
-    Lexer lexer = new(codigoFonte);
-    List<Token> tokens = lexer.Tokenizar();
-}
-else
+    if (gerar)
+    {
+        string codigoFonte = File.ReadAllText(args[1]);
+        Lexer lexer = new(codigoFonte);
+        List<Token> tokens = lexer.Tokenizar();
+        Parser parser = new(tokens);
+        parser.Parsear();
+    }
+    else
+    {
+        string[] codigoObjeto = File.ReadAllLines(args[1]);
+        List<Instrucao> programa = MontadorDeInstrucoes.Montar(codigoObjeto);
+        MaquinaVirtual vm = new();
+        vm.Executar(programa);
+    }
+} 
+catch (Exception e)
 {
-    string[] codigoObjeto = File.ReadAllLines(args[1]);
-    List<Instrucao> programa = MontadorDeInstrucoes.Montar(codigoObjeto);
-    MaquinaVirtual vm = new();
-    vm.Executar(programa);
+    Console.WriteLine(e.Message);
 }
