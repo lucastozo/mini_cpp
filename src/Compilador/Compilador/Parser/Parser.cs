@@ -2,6 +2,8 @@ class Parser
 {
     private readonly List<Token> _tokens;
     private int _pos;
+    private readonly TabelaDeSimbolos _tabelaDeSimbolos = new();
+    private readonly Stack<TipoAcaoSemantica> _acoesPendentes = new();
 
     public Parser(List<Token> tokens)
     {
@@ -22,6 +24,15 @@ class Parser
             switch (topo)
             {
                 case Terminal(var tipoEsperado):
+                    if (tipoEsperado == TipoToken.ID && _acoesPendentes.Count > 0)
+                    {
+                        TipoAcaoSemantica acao = _acoesPendentes.Pop();
+                        if (acao == TipoAcaoSemantica.Declarar)
+                            _tabelaDeSimbolos.Declarar(atual.Lexema);
+                        else
+                            _tabelaDeSimbolos.Verificar(atual.Lexema);
+                    }
+                    
                     if (tipoEsperado != atual.Tipo)
                         throw new Exception($"Esperado {tipoEsperado}, encontrado {atual.Tipo} (lexema '{atual.Lexema}').");
 
@@ -33,6 +44,10 @@ class Parser
                     
                     for (int i = producao!.Count - 1; i >= 0; i--)
                         pilha.Push(producao[i]);
+
+                    if (GatilhosSemanticos.TryConsultar(naoTerminal, atual.Tipo, out TipoAcaoSemantica acaoAgendada))
+                        _acoesPendentes.Push(acaoAgendada);
+                        
                     break;
             }
         }
