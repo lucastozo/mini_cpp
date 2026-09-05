@@ -1,4 +1,4 @@
-class MontadorDeInstrucoes
+static class MontadorDeInstrucoes
 {
     public static List<Instrucao> Montar(string[] codigoObjeto)
     {
