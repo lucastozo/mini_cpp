@@ -7,7 +7,12 @@ class Instrucao
     {
         Opcode = opcode;
         Operando = operando;
-    }  
+    }
+
+    public override string ToString()
+    {
+        return Operando != null ? $"{Opcode} {Operando}" : $"{Opcode}";
+    }
 }
 
 enum Operacao

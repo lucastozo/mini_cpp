@@ -19,6 +19,13 @@ try
         List<Token> tokens = lexer.Tokenizar();
         Parser parser = new(tokens);
         parser.Parsear();
+        List<Instrucao> programa = parser.Gerador.ObterPrograma();
+        string caminhoArquivo = Path.Combine(Directory.GetCurrentDirectory(), "out");
+        using (StreamWriter writer = new(caminhoArquivo))
+        {
+            foreach (Instrucao instrucao in programa)
+                writer.WriteLine(instrucao);
+        }
     }
     else
     {
@@ -30,5 +37,7 @@ try
 } 
 catch (Exception e)
 {
+    Console.ForegroundColor = ConsoleColor.Red;
     Console.WriteLine(e.Message);
+    Console.ResetColor();
 }
