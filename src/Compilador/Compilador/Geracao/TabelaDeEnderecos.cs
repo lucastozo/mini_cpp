@@ -10,5 +10,8 @@ class TabelaDeEnderecos
         return endereco;
     }
 
-    public int ObterEndereco(string nome) => _enderecos[nome];
+    public int ObterEndereco(string nome) 
+    {
+        return _enderecos[nome];
+    }
 }

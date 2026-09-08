@@ -7,12 +7,19 @@ class GeradorDeCodigo
     public int EnderecoAtual => _instrucoes.Count;
 
     public void Emitir(Operacao opcode, double? operando = null)
-        => _instrucoes.Add(new Instrucao(opcode, operando));
+    {
+        _instrucoes.Add(new Instrucao(opcode, operando));
+    }
 
     // usado pro backpatching: troca o operando de uma instrução ja emitida
     // (e.g. um DSVI/DSVF que o destino só ficou definido depois)
     public void CorrigirOperando(int endereco, double novoOperando)
-        => _instrucoes[endereco] = new Instrucao(_instrucoes[endereco].Opcode, novoOperando);
+    {
+        _instrucoes[endereco] = new Instrucao(_instrucoes[endereco].Opcode, novoOperando);
+    }
 
-    public List<Instrucao> ObterPrograma() => _instrucoes;
+    public List<Instrucao> ObterPrograma() 
+    { 
+        return _instrucoes;
+    }
 }

@@ -17,15 +17,17 @@ try
         string codigoFonte = File.ReadAllText(args[1]);
         Lexer lexer = new(codigoFonte);
         List<Token> tokens = lexer.Tokenizar();
+        
         Parser parser = new(tokens);
         parser.Parsear();
+
         List<Instrucao> programa = parser.Gerador.ObterPrograma();
-        string caminhoArquivo = Path.Combine(Directory.GetCurrentDirectory(), "out");
-        using (StreamWriter writer = new(caminhoArquivo))
-        {
-            foreach (Instrucao instrucao in programa)
-                writer.WriteLine(instrucao);
-        }
+
+        string nomeSaida = Path.ChangeExtension(Path.GetFileName(args[1]), ".out");
+        string caminhoArquivo = Path.Combine(Directory.GetCurrentDirectory(), nomeSaida);
+        using StreamWriter writer = new(caminhoArquivo);
+        foreach (Instrucao instrucao in programa)
+            writer.WriteLine(instrucao);
     }
     else
     {

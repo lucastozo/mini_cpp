@@ -133,9 +133,6 @@ class MaquinaVirtual
 
                 case Operacao.PARA:
                     return;
-                
-                default:
-                    throw new Exception($"Operação {instrucao.Opcode} não implementado.");
             }
 
             PC++;

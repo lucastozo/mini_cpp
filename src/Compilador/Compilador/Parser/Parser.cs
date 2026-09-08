@@ -44,23 +44,25 @@ class Parser
 
             switch (topo)
             {
-                case Terminal(var tipoEsperado):
-                    if (tipoEsperado != atual.Tipo)
-                        throw new Exception($"Esperado {tipoEsperado}, encontrado {atual.Tipo} (lexema '{atual.Lexema}').");
+                case Terminal terminal:
+                    if (terminal.Tipo != atual.Tipo)
+                        throw new Exception($"Esperado '{terminal.Tipo}', encontrado '{atual.Tipo}' (lexema '{atual.Lexema}').");
 
                     _pos++;
                     break;
 
-                case NaoTerminalSimbolo(var naoTerminal):
+                case NaoTerminalSimbolo naoTerminalSimbolo:
+                    NaoTerminal naoTerminal = naoTerminalSimbolo.Tipo;
+
                     if (!TabelaM.TryConsultar(naoTerminal, atual.Tipo, out Producao? producao))
-                        throw new Exception($"Token inesperado {atual.Tipo} (lexema '{atual.Lexema}') ao processar {naoTerminal}.");
+                        throw new Exception($"Token inesperado '{atual.Tipo}' (lexema '{atual.Lexema}') ao processar '{naoTerminal}'.");
 
                     for (int i = producao!.Count - 1; i >= 0; i--)
                         pilha.Push(producao[i]);
                     break;
 
-                case Acao(var executar):
-                    executar(this);
+                case Acao acao:
+                    acao.Executar(this);
                     break;
             }
         }

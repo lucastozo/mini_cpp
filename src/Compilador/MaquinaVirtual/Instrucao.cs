@@ -1,7 +1,7 @@
 class Instrucao
 {
-    public Operacao Opcode { get; init; }
-    public double? Operando { get; init; }
+    public Operacao Opcode { get; set; }
+    public double? Operando { get; set; }
 
     public Instrucao(Operacao opcode, double? operando)
     {
