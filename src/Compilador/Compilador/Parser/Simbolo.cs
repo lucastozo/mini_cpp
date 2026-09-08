@@ -8,3 +8,7 @@ abstract record Simbolo
 
 sealed record Terminal(TipoToken Tipo) : Simbolo;
 sealed record NaoTerminalSimbolo(NaoTerminal Tipo) : Simbolo;
+
+// Recebe o proprio Parser pra poder acessar o token atual e 
+// as ferramentas sem precisar capturar tudo antes
+sealed record Acao(Action<Parser> Executar) : Simbolo;
