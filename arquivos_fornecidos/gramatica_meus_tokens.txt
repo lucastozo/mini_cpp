@@ -1,0 +1,45 @@
+GRAMATICA MODIFICADA PARA USAR OS TOKENS DO MEU LEXER E FICAR 1:1
+
+         PROG -> CERQUILHA INCLUDE ME IOSTREAM MA USING NAMESPACE STD PONTOVIRGULA INT MAIN ESQPAREN DIRPAREN ESQCHAVE CMDS DIRCHAVE
+           DC -> VAR MAIS_CMDS
+          VAR -> TIPO VARS
+         VARS -> ID MAIS_VAR
+     MAIS_VAR -> VIRGULA VARS
+               | ε
+         TIPO -> DOUBLE
+         CMDS -> CMD MAIS_CMDS
+               | CMD_COND CMDS
+               | DC
+               | ε
+    MAIS_CMDS -> PONTOVIRGULA CMDS
+     CMD_COND -> IF ESQPAREN CONDICAO DIRPAREN ESQCHAVE CMDS DIRCHAVE PFALSA
+               | WHILE ESQPAREN CONDICAO DIRPAREN ESQCHAVE CMDS DIRCHAVE
+          CMD -> COUT INSERCAO ID INSERCAO ENDL
+               | ID RESTO_IDENT
+       PFALSA -> ELSE ESQCHAVE CMDS DIRCHAVE
+               | ε
+  RESTO_IDENT -> ATRIBUICAO EXP_IDENT
+    EXP_IDENT -> EXPRESSAO
+               | LER_DOUBLE ESQPAREN DIRPAREN
+     CONDICAO -> EXPRESSAO RELACAO EXPRESSAO
+      RELACAO -> IG
+               | DES
+               | MAI
+               | MI
+               | MA
+               | ME
+    EXPRESSAO -> TERMO OUTROS_TERMOS
+        TERMO -> OP_UN FATOR MAIS_FATORES
+        OP_UN -> MENOS
+               | ε
+        FATOR -> ID
+               | NUMERO_REAL
+               | ESQPAREN EXPRESSAO DIRPAREN
+OUTROS_TERMOS -> OP_AD TERMO OUTROS_TERMOS
+               | ε
+        OP_AD -> MAIS
+               | MENOS
+ MAIS_FATORES -> OP_MUL FATOR MAIS_FATORES
+               | ε
+       OP_MUL -> MULT
+               | DIV
