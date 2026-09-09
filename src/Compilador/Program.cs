@@ -10,16 +10,36 @@
 }
 
 bool gerar = args[0] == "-g";
-if (gerar)
+try
 {
-    string codigoFonte = File.ReadAllText(args[1]);
-    Lexer lexer = new(codigoFonte);
-    List<Token> tokens = lexer.Tokenizar();
-}
-else
+    if (gerar)
+    {
+        string codigoFonte = File.ReadAllText(args[1]);
+        Lexer lexer = new(codigoFonte);
+        List<Token> tokens = lexer.Tokenizar();
+        
+        Parser parser = new(tokens);
+        parser.Parsear();
+
+        List<Instrucao> programa = parser.Gerador.ObterPrograma();
+
+        string nomeSaida = Path.ChangeExtension(Path.GetFileName(args[1]), ".out");
+        string caminhoArquivo = Path.Combine(Directory.GetCurrentDirectory(), nomeSaida);
+        using StreamWriter writer = new(caminhoArquivo);
+        foreach (Instrucao instrucao in programa)
+            writer.WriteLine(instrucao);
+    }
+    else
+    {
+        string[] codigoObjeto = File.ReadAllLines(args[1]);
+        List<Instrucao> programa = MontadorDeInstrucoes.Montar(codigoObjeto);
+        MaquinaVirtual vm = new();
+        vm.Executar(programa);
+    }
+} 
+catch (Exception e)
 {
-    string[] codigoObjeto = File.ReadAllLines(args[1]);
-    List<Instrucao> programa = MontadorDeInstrucoes.Montar(codigoObjeto);
-    MaquinaVirtual vm = new();
-    vm.Executar(programa);
+    Console.ForegroundColor = ConsoleColor.Red;
+    Console.WriteLine(e.Message);
+    Console.ResetColor();
 }
