@@ -20,14 +20,15 @@ try
         
         Parser parser = new(tokens);
         parser.Parsear();
-
+        
+        /*
         List<Instrucao> programa = parser.Gerador.ObterPrograma();
-
         string nomeSaida = Path.ChangeExtension(Path.GetFileName(args[1]), ".out");
         string caminhoArquivo = Path.Combine(Directory.GetCurrentDirectory(), nomeSaida);
         using StreamWriter writer = new(caminhoArquivo);
         foreach (Instrucao instrucao in programa)
             writer.WriteLine(instrucao);
+        */
     }
     else
     {

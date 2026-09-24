@@ -23,14 +23,3 @@ class NaoTerminalSimbolo : Simbolo
         Tipo = tipo;
     }
 }
-
-// Recebe o próprio Parser pra poder acessar o token atual e as
-// ferramentas (Gerador, TabelaDeSimbolos, etc)
-class Acao : Simbolo
-{
-    public Action<Parser> Executar { get; }
-    public Acao(Action<Parser> executar)
-    {
-        Executar = executar;
-    }
-}
