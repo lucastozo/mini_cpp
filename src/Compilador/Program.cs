@@ -19,8 +19,10 @@ try
         List<Token> tokens = lexer.Tokenizar();
         
         Parser parser = new(tokens);
-        parser.Parsear();
+        NoDerivacao arvore = parser.Parsear();
         
+        Console.WriteLine(ImpressoraDerivacao.Gerar(arvore));
+
         /*
         List<Instrucao> programa = parser.Gerador.ObterPrograma();
         string nomeSaida = Path.ChangeExtension(Path.GetFileName(args[1]), ".out");
