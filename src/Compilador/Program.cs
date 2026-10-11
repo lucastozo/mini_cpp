@@ -19,9 +19,14 @@ try
         List<Token> tokens = lexer.Tokenizar();
         
         Parser parser = new(tokens);
-        NoDerivacao arvore = parser.Parsear();
+        NoDerivacao cst = parser.Parsear();
         
-        Console.WriteLine(ImpressoraDerivacao.Gerar(arvore));
+        // Console.WriteLine(ImpressoraDerivacao.Gerar(arvore));
+
+        ConstrutorAst construtor = new();
+        ProgramaNo ast = construtor.Construir(cst);
+
+        System.Console.WriteLine(ImpressoraAst.Gerar(ast));
 
         /*
         List<Instrucao> programa = parser.Gerador.ObterPrograma();
